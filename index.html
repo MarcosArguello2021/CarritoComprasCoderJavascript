@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Vineria</title>
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/estilo.css">
+    <script src="js/entrega1.js"></script>
+</head>
+
+    <body>
+        <header id="header">
+            <nav class="navbar navbar-default navbar-expand-lg navbar-light" style="background-color: #421440;">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Vineria<b> Marcos Argüello</b></a>
+                </div>
+                <div id="navbarCollapse" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/#">Nosotros</a></li>
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Variedades <b
+                                    class="caret"></b></a>
+
+                            <ul class="dropdown-menu">
+
+                                <form th:action="@{/articulo/listar}" method="POST">
+                                    <li><button class="btn btn-link" type="submit" name="variedad"
+                                            value="BLEND">Blend</button></li>
+                                    <li><button class="btn btn-link" type="submit" name="variedad"
+                                            value="BLANCO">Blancos</button></li>
+                                    <li><button class="btn btn-link" type="submit" name="variedad"
+                                            value="TINTO">Tintos</button></li>
+                                    <li><button class="btn btn-link" type="submit" name="variedad"
+                                            value="ESPUMANTES">Espumantes</button></li>
+                                    <li><button class="btn btn-link" type="submit" name="variedad"
+                                            value="ORGANICOS">Orgánicos/Veganos</button></li>
+                                </form>
+                            </ul>
+
+                        </li>
+                        <li class="active"><a href="/#">Catalogo</a></li>
+                        <li>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Contáctenos</a>
+                            <ul class="dropdown-menu form-wrapper">
+                                <li>
+                                    <form action="/mailsender" method="post">
+                                        <p class="hint-text">Llena los siguientes campos para enviarnos su consulta</p>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Nombre" name="nombre"
+                                                required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Apellido"
+                                                name="apellido" required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Correo" name="correo"
+                                                required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea name="mensaje" rows="7" cols="25" required="required"
+                                                placeholder="Escriba su consulta"></textarea>
+                                        </div>
+                                        <input type="submit" class="btn btn-primary btn-block" value="Enviar">
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" th:if="${#authorization.expression('hasAnyRole(''ADMIN'')')}">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Vista Administrador <b
+                                    class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/proveedor/registro">Cargar Proveedor</a></li>
+                                <li><a href="/proveedor/listar">Listar Proveedor</a></li>
+                                <li><a href="/articulo/registro">Cargar Articulos</a></li>
+                                <li><a href="/articulo/listar">Listar Articulos</a></li>
+                            </ul>
+                        </li>
+                        <form class="navbar-form form-inline" th:action="@{/articulo/buscar}" method="POST">
+                            <div class="input-group search-box">
+
+                                <input type="search" name="nombre" class="form-control" placeholder="Buscar vino">
+                                <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+                            </div>
+                        </form>
+
+
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li sec:authorize="!isAuthenticated()">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Login</a>
+                            <ul class="dropdown-menu form-wrapper">
+                                <li>
+                                    <form action="/logincheck" method="POST">
+                                        <p th:if="${error != null}" th:text="${error}" style="color:red"></p>
+                                        <p th:if="${logout != null}" th:text="${logout}" style="color:greenyellow"></p>
+                                        <p class="hint-text">Inicia sesion</p>
+
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Ingrese su correo"
+                                                name="correo" required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" placeholder="Password"
+                                                name="password" required="required">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary btn-block" value="Login">
+                                        <div class="form-footer">
+                                            <a href="#">Olvidaste tu password?</a>
+                                        </div>
+                                    </form>
+
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li sec:authorize="!isAuthenticated()">
+                            <a href="#" data-toggle="dropdown"
+                                class="btn btn-primary dropdown-toggle get-started-btn">Regístrate</a>
+                            <ul class="dropdown-menu form-wrapper">
+                                <li>
+                                    <form action="/usuario/registro" method="post"><input type="hidden" name="_csrf"
+                                            value="c6fd0a5e-56f4-45f7-a0df-717099f616bd" />
+                                        <p class="hint-text">Llena los siguientes campos para crear tu cuenta!</p>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Nombre" name="nombre"
+                                                required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Apellido"
+                                                name="apellido" required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Correo" name="correo"
+                                                required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" placeholder="Password"
+                                                required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" placeholder="Confirmar Password"
+                                                name="password" required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="checkbox-inline"><input type="checkbox" required="required">
+                                                Acepto los <a href="/terminos">Terminos &amp; Condiciones</a></label>
+                                        </div>
+                                        <input type="submit" class="btn btn-primary btn-block" value="Registrarse">
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                       
+                </div>
+            </nav>
+
+        </header>
+        <master>
+            <header class="header content">
+                <div class="header-video">
+                    <video src="/video/inicio.mp4" autoplay loop></video>
+                </div>
+                <div class="header-overlay"></div>
+                <div class="header-content">
+                    <h1>Simulador Proyecto final: Marcos Argüello. Carrito de compras venta de vinos</h1>
+                </div>
+            </header>
+        </master>
+    </body>
+
+</html>
