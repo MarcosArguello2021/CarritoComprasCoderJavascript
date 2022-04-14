@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Acerca de nosotros</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="/css/estilo.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Numans');
+    </style>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <script>
+        // Prevent dropdown menu from closing when click inside the form
+        $(document).on("click", ".navbar-right .dropdown-menu", function (e) {
+            e.stopPropagation();
+        });
+    </script>
+
+<link rel="stylesheet" href="/css/estilo.css">
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Numans');
+</style>
+
+
+<script src="/js/entrega1.js"></script>
+
+</head>
+
+<body>
+    <header id="header">
+        <nav class="navbar navbar-default navbar-expand-lg navbar-light" style="background-color: #421440;">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Vineria<b> Marcos Argüello</b></a>
+                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- Collection of nav links, forms, and other content for toggling -->
+            <div id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Variedades <b class="caret"></b></a>
+
+                        <ul class="dropdown-menu">
+
+                            <form th:action="@{/articulo/listar}" method="POST">
+                                <li><button class="btn btn-link" type="submit" name="variedad"
+                                        value="BLEND">Blend</button></li>
+                                <li><button class="btn btn-link" type="submit" name="variedad"
+                                        value="BLANCO">Blancos</button></li>
+                                <li><button class="btn btn-link" type="submit" name="variedad"
+                                        value="TINTO">Tintos</button></li>
+                                <li><button class="btn btn-link" type="submit" name="variedad"
+                                        value="ESPUMANTES">Espumantes</button></li>
+                                <li><button class="btn btn-link" type="submit" name="variedad"
+                                        value="ORGANICOS">Orgánicos/Veganos</button></li>
+                            </form>
+                        </ul>
+
+                    </li>
+                    <li class="active"><a href="catalogo.html">Catalogo</a></li>
+                    <li>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Contáctenos</a>
+                        <ul class="dropdown-menu form-wrapper">
+                            <li>
+                                <form action="/mailsender" method="post">
+                                    <p class="hint-text">Llena los siguientes campos para enviarnos su consulta</p>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Nombre" name="nombre"
+                                            required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Apellido" name="apellido"
+                                            required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Correo" name="correo"
+                                            required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea name="mensaje" rows="7" cols="30" required="required"
+                                            placeholder="Escriba su consulta"></textarea>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary btn-block" value="Enviar">
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" th:if="${#authorization.expression('hasAnyRole(''ADMIN'')')}">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Vista Administrador <b
+                                class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/proveedor/registro">Cargar Proveedor</a></li>
+                            <li><a href="/proveedor/listar">Listar Proveedor</a></li>
+                            <li><a href="/articulo/registro">Cargar Articulos</a></li>
+                            <li><a href="/articulo/listar">Listar Articulos</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <form class="navbar-form form-inline" th:action="@{/articulo/buscar}" method="POST">
+                            <div class="input-group search-box">
+
+                                <input type="search" name="nombre" class="form-control" placeholder="Buscar vino">
+                                <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+                            </div>
+                        </form>
+                    </li>
+                    <li>
+                        <button id="carrito" style="font: size 15px">Shop<i class="fa fa-shopping-cart"></i></button>
+                    </li>
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li sec:authorize="!isAuthenticated()">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Login</a>
+                        <ul class="dropdown-menu form-wrapper">
+                            <li>
+                                <form action="/logincheck" method="POST">
+                                    <p th:if="${error != null}" th:text="${error}" style="color:red"></p>
+                                    <p th:if="${logout != null}" th:text="${logout}" style="color:greenyellow"></p>
+                                    <p class="hint-text">Inicia sesion</p>
+
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Ingrese su correo"
+                                            name="correo" required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Password"
+                                            name="password" required="required">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary btn-block" value="Login">
+                                    <div class="form-footer">
+                                        <a href="#">Olvidaste tu password?</a>
+                                    </div>
+                                </form>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()">
+                        <a href="#" data-toggle="dropdown"
+                            class="btn btn-primary dropdown-toggle get-started-btn">Regístrate</a>
+                        <ul class="dropdown-menu form-wrapper">
+                            <li>
+                                <form action="/usuario/registro" method="post"><input type="hidden" name="_csrf"
+                                        value="c6fd0a5e-56f4-45f7-a0df-717099f616bd" />
+                                    <p class="hint-text">Llena los siguientes campos para crear tu cuenta!</p>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Nombre" name="nombre"
+                                            required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Apellido" name="apellido"
+                                            required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Correo" name="correo"
+                                            required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Password"
+                                            required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Confirmar Password"
+                                            name="password" required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-inline"><input type="checkbox" required="required">
+                                            Acepto los <a href="/terminos">Terminos &amp; Condiciones</a></label>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary btn-block" value="Registrarse">
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+            </div>
+        </nav>
+    </header>
+
+    <master style="align-content: center">
+        <br>
+        <br>
+        <br>
+        <main class="page">
+            <section class="clean-block about-us bg-transparent">
+
+                <div class="container">
+
+                    <div class="block-heading justify-content-center line-height: 200%" style="color: #051d1d">
+                        <h2 class="text-center">Vineria Marcos Argüello</h2>
+                        <div class="header-container">
+                            <div class="video-container">
+                                <video preload="true" autoplay loop="loop" volume="0" style="width: 100%;
+                                       height: auto;">
+                                    <source src="/video/vinias.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                        <p>Convencidos de la calidad la uva de nuestros productos, es que decidimos comercializar, con
+                            el fin de poder mostrar los productos obtenidos a partir de una gran colección de las
+                            principales bodegas de Mendoza. El espíritu creador se refleja en nuestros vinos que
+                            responden a los más altos estándares de calidad exigidos por la enología contemporánea.
+                            "Este proyecto comienza con el sueño de ser una Finca proveedora de uva para vinos de alta
+                            gama. Al principio no fue fácil, fue todo un desafío, la finca se encontraba en una zona
+                            virgen y originaria, el terreno era un monte con especies nativas, principalmente colonizado
+                            por jarilla, algarrobos y cactus, todas especies que se desarrollan en zonas áridas. Hoy en
+                            día, luego de jornadas de trabajo de sol a sol, podemos estar orgullosos de haber plantado
+                            110 de las 200 hectáreas con vid de alta calidad y almendros gracias al cuidado de
+                            excelencia que realizamos."
+                        </p>
+                    </div>
+
+                    <div class="row justify-content-center" style="color: #000">
+                        <div class="col-sm-5 col-lg-4">
+                            <div class="card clean-card text-center"><img class="card-img-top w-100 d-block"
+                                    src="/img/avatar1.jpg">
+                                <div class="card-body info">
+                                    <h4 class="card-title">Marcos Argüello</h4>
+                                    <p class="card-text">Gerente Regional</p>
+                                    <div class="icons"><a href="#"><i class="icon-social-facebook"></i></a><a
+                                            href="#"><i class="icon-social-instagram"></i></a><a href="#"><i
+                                                class="icon-social-twitter"></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 col-lg-4">
+                            <div class="card clean-card text-center"><img class="card-img-top w-100 d-block"
+                                    src="/img/avatar2.jpg">
+                                <div class="card-body info">
+                                    <h4 class="card-title">Matias Cela Diaz</h4>
+                                    <p class="card-text">Gerente de ventas</p>
+                                    <div class="icons"><a href="#"><i class="icon-social-facebook"></i></a><a
+                                            href="#"><i class="icon-social-instagram"></i></a><a href="#"><i
+                                                class="icon-social-twitter"></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 col-lg-4">
+                            <div class="card clean-card text-center"><img class="card-img-top w-100 d-block"
+                                    src="/img/avatar3.jpg">
+                                <div class="card-body info">
+                                    <h4 class="card-title">Antonella Rinaldi</h4>
+                                    <p class="card-text">Gerente Dpto TI</p>
+                                    <div class="icons"><a href="#"><i class="icon-social-facebook"></i></a><a
+                                            href="#"><i class="icon-social-instagram"></i></a><a href="#"><i
+                                                class="icon-social-twitter"></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+    </master>
+    <div class="modal fade" th:each="usuario : ${usuarios}" th:attr="id=${'editModal' + usuario.id}"
+        data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <form th:object="${usuario}" th:action="@{/usuario/editar}" method="POST">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" align="center" id="staticBackdropLabel">Editar datos del Perfil</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input id="id" name="id" type="hidden" th:value="${usuario.id}">
+                        <div class="form-group">
+                            <label class="form-label">Nombre:</label>
+                            <input class="form-control" type="text" th:value="${usuario.nombre}" name="nombre"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Apellido:</label>
+                            <input class="form-control" type="text" th:value="${usuario.apellido}"
+                                name="apellido"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Correo:</label>
+                            <input class="form-control" type="text" th:value="${usuario.correo}" name="correo"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password:</label>
+                            <input class="form-control" type="password" name="password"></input>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="summit" class="btn btn-warning">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer class="page-footer">
+        <div class="container text-center">
+            <div class="social-links">
+                <a href="https://t.me/IkaryShinji" title="Telegram" target="_blank"><i class="fa fa-telegram"></i></a>
+                <a href="https://github.com/MarcosArguello2021" title="Github" target="_blank"><i
+                        class="fa fa-github-alt"></i></a>
+            </div>
+            <div class="copy-right mt-20">
+                <a href="https://www.linkedin.com/in/marcos-arg%C3%BCello-804105195/" title="LinkedIn"
+                    target="_blank">Perfil de Linkedin</a>
+                <p class="alt-font">Programador Web Full Stack: Marcos Argüello</p>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+
+</body>
+
+</html>
