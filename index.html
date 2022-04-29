@@ -11,12 +11,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Raleway&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/estilo.css">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
         @import url('https://fonts.googleapis.com/css?family=Numans');
+    </style>
+    <style>
+        .sidebar{
+            color: black;
+        }
     </style>
 
 </head>
@@ -43,13 +50,13 @@
 
                         <ul class="dropdown-menu">
 
-                            <form th:action="@{/articulo/listar}" method="POST">
-                                <li><button class="btn btn-link" type="submit" name="variedad"
+                            <form action="/catalogo.html" method="GET" >
+                                <li><button class="btn btn-link"  type="submit" name="variedad"
                                         value="BLEND">Blend</button></li>
                                 <li><button class="btn btn-link" type="submit" name="variedad"
-                                        value="BLANCO">Blancos</button></li>
+                                        value="BLANCOS">Blancos</button></li>
                                 <li><button class="btn btn-link" type="submit" name="variedad"
-                                        value="TINTO">Tintos</button></li>
+                                        value="TINTOS">Tintos</button></li>
                                 <li><button class="btn btn-link" type="submit" name="variedad"
                                         value="ESPUMANTES">Espumantes</button></li>
                                 <li><button class="btn btn-link" type="submit" name="variedad"
@@ -84,18 +91,17 @@
                                 </form>
                             </li>
                         </ul>
-                        <li>
-                            <form class="navbar-form form-inline">
-                                <div class="input-group search-box">
-                                    <input type="search" class="form-control" placeholder="Buscar vino">
-                                    <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
-                                </div>
-                            </form>
-                        </li>
-                        <li>
-                            <button id="carrito" class="btn btn-primary btn-block"><i
-                                    class="fa fa-shopping-cart">Shop</i><span id="cart-counter">0</span></button>
-                        </li>
+                    <li>
+                        <!-- <form action="/catalogo.html" method="GET" class="navbar-form form-inline"> -->
+                            <div class="navbar-form form-inline input-group search-box" id="search-box">
+                                <input id="input-search" onkeypress="getValueInput()" class="form-control" placeholder="Buscar vino">
+                            </div>
+                        <!-- </form> -->
+                    </li>
+                    <li>
+                        <button id="carrito" class="btn btn-primary btn-block"><i
+                                class="fa fa-shopping-cart">Carrito</i><span id="cart-counter">0</span></button>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li sec:authorize="!isAuthenticated()">
@@ -171,21 +177,34 @@
     <master>
         <header class="header content">
             <div class="header-video">
-                <video src="/video/inicio.mp4" autoplay loop></video>
+                <video src="/video/inicio.mp4" autoplay="true" muted="true" loop="true"></video>
             </div>
             <div class="header-overlay"></div>
             <div class="header-content">
                 <h1>Proyecto: Marcos Argüello. Carrito de compras venta de vinos</h1>
             </div>
+            <div class="side-bar-wrapper">
+                <div class="sidebar" id="side-bar">
+                    <span id="close-cart"><i class="fa fa-window-close" aria-hidden="true"></i></span>
+                    <br>
+                    <br>
+                    <h3 class="cart">Carrito de compras</h3>
+                    <div id="cart"></div>
+                    <div id="carrito" class="container-fluid text-center">
+                        Total:$ <div id="total">0</div>
+                    </div>
+                    <div class="cart-footer">
+                        <button class="clear-cart btn-cart" id="clear">Limpiar carrito</button>
+                    </div>
+                </div>
+            </div>
         </header>
     </master>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/js/app.js"></script>
     <script src="/js/animaciones.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
 </body>
-
 </html>

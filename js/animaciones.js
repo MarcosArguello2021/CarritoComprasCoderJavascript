@@ -3,8 +3,17 @@ const openBtn = document.getElementById("carrito")
 const sideBarWrapper = document.querySelector("div.side-bar-wrapper");
 
 openBtn.addEventListener("click", function () {
-  sideBarWrapper.style.width = "100vw";
-  document.querySelector("#side-bar").style.width = "400px";
+  if (JSON.parse(localStorage.getItem("Carrito")).length == 0) {
+    swal({
+      title: "Carrito Vacío",
+      icon: "error",
+      button: "OK",
+    });
+  }else{
+    sideBarWrapper.style.width = "100vw";
+    document.querySelector("#side-bar").style.width = "400px";
+  }
+  
 });
 
 const closeBtn = document.querySelector("#close-cart");
