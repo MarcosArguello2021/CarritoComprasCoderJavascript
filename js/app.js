@@ -1,36 +1,19 @@
-//Objeto para modelar los productos del catalogo
-class Producto {
-  ///Declaro la funcion constructora
-  constructor(nombre, precio, id, img, variedad, capacidad, cantidad) {
-    this.nombre = nombre;
-    this.precio = precio;
-    this.id = id;
-    this.img = img;
-    this.variedad = variedad;
-    this.capacidad = capacidad;
-    this.cantidad = cantidad;
-  }
-}
-
 //Array para guardar los productos creados manualmente
-const productos = [];
+let productos = [];
 
-//Agregamos manualmente nunevos productos al array
-productos.push(new Producto("Achaval Ferrer Altamira", 105415.00, 1, "/img/catalogo/AchavalFerrer_Malbec.jpg", "TINTOS", 1500, 0));
-productos.push(new Producto("Alambrado Pinot Rose", 1091.00, 2, "/img/catalogo/Alambrado_rose.jpg", "ESPUMANTES", 750, 0));
-productos.push(new Producto("Achaval Ferrer Quimera", 24134.00, 6, "/img/catalogo/AchavalFerrer_Quimera.jpg", "BLEND", 750, 0));
-productos.push(new Producto("Alto las hormigas", 900.00, 3, "/img/catalogo/Alta_LasHormigas_Organic.jpg", "ORGANICOS", 900, 0));
-productos.push(new Producto("Estiba reservada blend", 21000.00, 4, "/img/catalogo/Estiba_reservada_blend.jpg", "BLEND", 1000, 0));
-productos.push(new Producto("Nicasia blanc ", 1350.00, 5, "/img/catalogo/Nicasia_blanc_.jpg", "BLANCOS", 700, 0));
-productos.push(new Producto("Salentein rose", 800.00, 6, "/img/catalogo/Salentein_rpse.jpg", "ESPUMANTES", 750, 0));
+//Hacemos un fetch para obtener los productos almacenados en un archivo JSON 
+fetch("http://localhost:5500/js/catalogo.json")
+  .then((res) => res.json())
+  .then((data) => {
+    productos = data;
+    localStorage.setItem("Catalogo", JSON.stringify(productos));
+  });
 
 //Variables
 const cartContainer = document.querySelector("#cart"); //Contenedor Carrito
-const contadorCarrito = document.querySelector("#cart-counter");
-// const btnSerch = document.querySelector("#input-search");
+const contadorCarrito = document.querySelector("#cart-counter");//Contador Carrito
 
 ///Carga de la app:
-localStorage.setItem("Catalogo", JSON.stringify(productos));
 let categoria = window.location.href;
 if (categoria.match("variedad=BLEND")) {
   let arrayFiltrado = filtrarVariedad("BLEND")
@@ -50,7 +33,8 @@ if (categoria.match("variedad=BLEND")) {
 } else {
   crearCards(JSON.parse(localStorage.getItem("Catalogo")));
 }
-let carritoDelLocal = JSON.parse(localStorage.getItem("Carrito")); //Realizo la llamada al local.
+//Reviso la existencia del carrito de compras al iniciar
+let carritoDelLocal = JSON.parse(localStorage.getItem("Carrito")); 
 if (carritoDelLocal) {
   actualizarCarrito(carritoDelLocal);
 } else {
@@ -58,32 +42,12 @@ if (carritoDelLocal) {
 }
 document.querySelector("#clear").addEventListener("click", eliminarCarrito);
 
-
-// // //Botón de busqueda
-// btnSerch.addEventListener(function (e) {
-//   let busqueda = document.querySelector("#input-search").value;
-//   console.log(busqueda);
-//   if (busqueda.length > 3) {
-//     const arrayFiltrado = productos.filter((item) =>
-//       item.nombre.includes(busqueda)
-//     );
-
-//     document.querySelector("#cards").innerHTML = "";
-//     crearCards(arrayFiltrado);
-//   } else {
-//     alert("ingresa mas caracteres");
-//   }
-// });
-
-const getValueInput = () =>{
+const getValueInput = () => {
   let inputValue = document.getElementById("input-search").value;
   console.log(inputValue);
   let filtrados = buscarNombre(inputValue);
   crearCards(filtrados);
 }
-function filterList(data, query) {
-  return data.filter(item => item.nombre.toLowerCase().search(query.toLowerCase()) !== -1);
-};
 
 //Filtrar pot variedad vino
 function filtrarVariedad(variedad) {
@@ -93,11 +57,11 @@ function filtrarVariedad(variedad) {
 }
 
 //Buscar por nombre vino
- function buscarNombre(busqueda) {
-   let arrayProductos = JSON.parse(localStorage.getItem("Catalogo"));
-   let arrayFiltrado = arrayProductos.filter(arrayProductos => arrayProductos.nombre.includes(busqueda));
-   return arrayFiltrado;
- }
+function buscarNombre(busqueda) {
+  let arrayProductos = JSON.parse(localStorage.getItem("Catalogo"));
+  let arrayFiltrado = arrayProductos.filter(arrayProductos => arrayProductos.nombre.includes(busqueda));
+  return arrayFiltrado;
+}
 
 //Agregar al carrito:
 function agregarProducto(id, stock) {
@@ -149,10 +113,10 @@ function eliminarProducto() {
 //Creamos las cards de los productos.
 // Recorremos el array productos y se crea una card con las propiedades de cada objeto.
 function crearCards(productos) {
-  if (document.getElementById("cards")){
+  if (document.getElementById("cards")) {
     document.querySelector("#cards").innerHTML = "";
   }
-    productos.forEach(items => {
+  productos.forEach(items => {
     let cardNueva = document.createElement('div');; // Creo un elemento nuevo.
     cardNueva.classList.add("card", "col-4", "m-3", "item-rounded", "box-rounded");
 
