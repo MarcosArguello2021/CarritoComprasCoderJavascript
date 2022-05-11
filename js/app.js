@@ -2,7 +2,7 @@
 let productos = [];
 
 //Hacemos un fetch para obtener los productos almacenados en un archivo JSON 
-fetch("http://localhost:5500/js/catalogo.json")
+fetch("http://localhost:5501/js/catalogo.json")
   .then((res) => res.json())
   .then((data) => {
     productos = data;
@@ -13,41 +13,40 @@ fetch("http://localhost:5500/js/catalogo.json")
 const cartContainer = document.querySelector("#cart"); //Contenedor Carrito
 const contadorCarrito = document.querySelector("#cart-counter");//Contador Carrito
 
+document.querySelector("#clear").addEventListener("click", eliminarCarrito);
+
 ///Carga de la app:
+//Analizo la URL para filtrar resultados
 let categoria = window.location.href;
 if (categoria.match("variedad=BLEND")) {
-  let arrayFiltrado = filtrarVariedad("BLEND")
+  let arrayFiltrado = filtrarVariedad("BLEND");
   crearCards(arrayFiltrado);
 } else if (categoria.match("variedad=TINTOS")) {
-  let arrayFiltrado = filtrarVariedad("TINTOS")
+  let arrayFiltrado = filtrarVariedad("TINTOS");
   crearCards(arrayFiltrado);
 } else if (categoria.match("variedad=BLANCOS")) {
-  let arrayFiltrado = filtrarVariedad("BLANCOS")
+  let arrayFiltrado = filtrarVariedad("BLANCOS");
   crearCards(arrayFiltrado);
 } else if (categoria.match("variedad=ESPUMANTES")) {
-  let arrayFiltrado = filtrarVariedad("ESPUMANTES")
+  let arrayFiltrado = filtrarVariedad("ESPUMANTES");
   crearCards(arrayFiltrado);
 } else if (categoria.match("variedad=ORGANICOS")) {
-  let arrayFiltrado = filtrarVariedad("ORGANICOS")
+  let arrayFiltrado = filtrarVariedad("ORGANICOS");
+  crearCards(arrayFiltrado);
+}else if(categoria.match("nombre=")){
+  let indice = categoria.indexOf("nombre=");
+  let busqueda = categoria.substring(indice+7, );
+  let arrayFiltrado = buscarNombre(busqueda);
   crearCards(arrayFiltrado);
 } else {
   crearCards(JSON.parse(localStorage.getItem("Catalogo")));
 }
+
 //Reviso la existencia del carrito de compras al iniciar
 let carritoDelLocal = JSON.parse(localStorage.getItem("Carrito")); 
-if (carritoDelLocal) {
-  actualizarCarrito(carritoDelLocal);
-} else {
-  localStorage.setItem("Carrito", "[]");
-}
-document.querySelector("#clear").addEventListener("click", eliminarCarrito);
 
-const getValueInput = () => {
-  let inputValue = document.getElementById("input-search").value;
-  console.log(inputValue);
-  let filtrados = buscarNombre(inputValue);
-  crearCards(filtrados);
-}
+//Uso un Operador Ternario para actulizar el carrito
+carritoDelLocal ? actualizarCarrito(carritoDelLocal) : localStorage.setItem("Carrito", "[]");
 
 //Filtrar pot variedad vino
 function filtrarVariedad(variedad) {
